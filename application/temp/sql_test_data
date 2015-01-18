@@ -1,0 +1,10 @@
+insert into product (category_id,name,description,img,price) values (0,'test prod1','this is a test', '', 12.5)
+
+INSERT INTO `ci`.`user` (`name`, `openid`, `gender`, `birthday`, `phone`, `password`) VALUES ('test', '0', 'm', '0000-00-00', '123456', '123456');
+insert into credit_history (typeid,expiration,amount,userid, updated,client) values(1,'1994-01-04',10,0,'2014-06-22',1)
+insert into credit_history (typeid,expiration,amount,userid, updated,client) values(1,'1994-01-04',-3,0,'2014-06-22',1)
+insert into entity_category (name) values ('餐饮');
+insert into entity_category (name,parent_id) values ('西餐'，1);
+INSERT INTO `role` (`name`) VALUES ('user');
+INSERT INTO `role` (`name`) VALUES ('admin');
+INSERT INTO `user_role` (`user_id`, `role_id`, `entity_id`) VALUES (1, 2, 1);

@@ -1,0 +1,209 @@
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE  `user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `openid` varchar(50) NOT NULL,
+  `gender` char(10) NOT NULL,
+  `birthday` date NOT NULL,
+  `clientid` int(10) unsigned NOT NULL DEFAULT 0,
+  `phone` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `client`;
+CREATE TABLE  `client` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `credit_history`;
+CREATE TABLE  `credit_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `typeid` int(10) unsigned  NOT NULL DEFAULT '0',
+  `expiration` datetime NOT NULL,
+  `amount` int(10) unsigned  NOT NULL,
+  `userid` int(10) unsigned  NOT NULL,
+  `client` int(10) unsigned  NOT NULL DEFAULT '0',
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE  `product` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(45) NOT NULL,
+  `description` varchar(400) NOT NULL,
+  `img` varchar(45) NULL DEFAULT NULL,
+  `price` float unsigned NOT NULL,
+  `entity_id` INT(11) NULL DEFAULT NULL,
+  `weight` INT(11) NULL DEFAULT 0,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+  
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE  `admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `clientid` int(10) unsigned NOT NULL DEFAULT '0',
+  `typeid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ 
+ 
+ 
+DROP TABLE IF EXISTS `product_img`;
+CREATE TABLE  `product_img` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `url` varchar(450) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ 
+ 
+DROP TABLE IF EXISTS `product_category`;
+CREATE TABLE  `product_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned ,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `entity_category`;
+CREATE TABLE  `entity_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned ,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `entity`;
+CREATE TABLE  `entity` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(450) NOT NULL,
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `phone` varchar(20)  NOT NULL DEFAULT '',
+  `address_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE `address` (
+	`id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+	`city` VARCHAR(50) NULL DEFAULT NULL,
+	`state` VARCHAR(50) NULL DEFAULT NULL,
+	`floor` VARCHAR(50) NULL DEFAULT NULL,
+	`number` VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `entity_img`;
+CREATE TABLE `entity_img` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`entity_id` INT(10) UNSIGNED NOT NULL,
+	`url` VARCHAR(450) NOT NULL,
+	`shape` varchar(45) NOT NULL DEFAULT 'same',
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE  `comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(85) NOT NULL,
+  `content` varchar(450) NOT NULL,
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `target_type` varchar(45) NOT NULL DEFAULT 'system',
+  `target_id` int(10) NOT NULL  DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL,
+  `status_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE  `news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(85) NOT NULL,
+  `content` varchar(500) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `target_type` varchar(45) NOT NULL DEFAULT 'system',
+  `img` varchar(145) NOT NULL,
+  `url` varchar(200) NULL DEFAULT NULL,
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `weight` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`name` CHAR(20) NOT NULL DEFAULT ' ',
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`user_id` INT NOT NULL,
+	`role_id` INT NOT NULL,
+	`entity_id` INT NOT NULL,
+	`entity_type` VARCHAR(50) NOT NULL DEFAULT 'entity',
+	`is_deleted` TINYINT NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+ALTER TABLE `news`
+	ADD COLUMN `target_id` INT(10) UNSIGNED NULL AFTER `is_deleted`,
+	ADD COLUMN `start_date` DATE NULL AFTER `target_id`;
+ALTER TABLE `news`
+	ADD COLUMN `end_date` DATE NULL DEFAULT NULL AFTER `start_date`;
+ALTER TABLE `user`
+	ADD COLUMN `email` VARCHAR(70) NOT NULL DEFAULT '' AFTER `phone`,
+	ADD COLUMN `password` CHAR(20) NOT NULL  DEFAULT '' AFTER `email`;
+ALTER TABLE `user`
+	ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT '0' AFTER `gender`;
+ALTER TABLE `entity`
+	ADD COLUMN `client_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `address_id`;
+ALTER TABLE `user`
+	ADD COLUMN `status` VARCHAR(50) NOT NULL DEFAULT 'active' AFTER `password`,
+	ADD COLUMN `type` VARCHAR(50) NOT NULL DEFAULT 'front' AFTER `status`;
+
+ALTER TABLE `client`
+	ADD COLUMN `is_deleted` INT NOT NULL DEFAULT '0' AFTER `name`,
+	ADD COLUMN `status` VARCHAR(50) NOT NULL DEFAULT 'active' AFTER `is_deleted`,
+	ADD COLUMN `username` VARCHAR(80) NOT NULL DEFAULT ' ' AFTER `status`,
+	ADD COLUMN `password` VARCHAR(80) NOT NULL DEFAULT '  ' AFTER `username`;

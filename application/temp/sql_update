@@ -1,0 +1,9 @@
+ALTER TABLE `entity`
+	ADD COLUMN `img` VARCHAR(500) NOT NULL DEFAULT ' ' AFTER `is_deleted`;
+	
+ALTER TABLE `entity`
+	ADD COLUMN `url` VARCHAR(450) NOT NULL DEFAULT ' ' AFTER `address_id`;
+	
+ALTER TABLE `product`
+	ADD COLUMN `url` VARCHAR(450) NOT NULL DEFAULT ' ' AFTER `is_deleted`;
+	
