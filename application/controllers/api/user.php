@@ -48,13 +48,15 @@ class User extends REST_Controller
 	}
 	
 	function login_post()
-	{
+	
+	{ 
 		if(!$this->post('username') || ! $this->post('password'))
 		{
 			$this->response(NULL, 400);
 		}
 	
 		$item = $this->main->login($this->post('username'), $this->post('password'));
+
 		if($item)
 		{
 			$this->response($item, 200); // 200 being the HTTP response code

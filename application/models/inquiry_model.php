@@ -71,17 +71,19 @@ class inquiry_model extends My_Model {
 	function createDetail($obj)
 	{
 		//$obj = parse_str($obj);
-		var_dump($obj['name']);die;
 		$request = my_process_db_request($obj, $this->data, false);
-		if(isset($obj['questions']))
-		{
-		//var_dump($obj['questions']);
-		}
-var_dump($obj);die;
+		
 		$request['id'] = null;
 		$this->db->insert('inquiry', $request);
-		//$id = $this->db->insert_id();
-		
+		$id = $this->db->insert_id();
+		if(isset($obj['questions']))
+		{
+			$questions = explode('###', $obj['questions']);
+			foreach ($questions as $question)
+			{
+				
+			}
+		}
 		return $id;
 		//return $obj;
 	}
