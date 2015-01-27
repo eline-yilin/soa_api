@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `inquiry_greeting`;
 CREATE TABLE `inquiry_greeting` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`content` VARCHAR(500) NOT NULL DEFAULT '',
-	`inquiry_id` INT NOT NULL DEFAULT '',
+	`inquiry_id` INT NOT NULL,
 	`status` BIT NOT NULL DEFAULT b'0',
 	PRIMARY KEY (`id`)
 )

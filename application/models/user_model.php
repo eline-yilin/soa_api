@@ -61,7 +61,7 @@ class user_model extends My_Model {
 		/* $query = $this->db->select("*")
 		->from("user")
 		->where($where); */
-	
+	//var_dump($string,$password,$username, $client_id);die;
 		$query = $this->db->query($string, array($password,$username,$username, $client_id));
 		
 		if($query && $query->result()){

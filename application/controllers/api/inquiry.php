@@ -35,7 +35,7 @@ class Inquiry extends REST_Controller
 	{
 		
 	   $user_id = $this->get('user_id');
-		$item = $this->product->getList(array('user_id'=>$user_id));
+		$item = $this->model->getList(array('user_id'=>$user_id));
 		if($item)
 		{
 			$this->response($item, 200); // 200 being the HTTP response code

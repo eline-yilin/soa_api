@@ -30,16 +30,17 @@ class inquiry_model extends My_Model {
 	function getList($param = null)
 	{
 		$user_id = isset($param['user_id']) ? $param['user_id'] : 0;
-		$str = "SELECT p.* FROM product p LEFT JOIN user_role r
+		$str = "SELECT i.* FROM inquiry i" ; 
+		/* " p LEFT JOIN user_role r
 				ON p.entity_id = r.entity_id AND r.entity_type = 'entity' AND r.is_deleted = 0 AND
 				p.is_deleted = 0
 				LEFT JOIN entity e ON p.entity_id = e.id
-				WHERE 1=1 ";
+				WHERE 1=1 "; */
 		if($user_id)
 		{
-			$str .= "AND r.user_id = ?";
+			//$str .= "AND r.user_id = ?";
 		}
-		$query = $this->db->query($str, array($user_id));
+		$query = $this->db->query($str);
 		$resp = array();
 		foreach ($query->result() as $row)
 		{
