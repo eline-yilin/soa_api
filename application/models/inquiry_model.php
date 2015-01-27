@@ -78,11 +78,37 @@ class inquiry_model extends My_Model {
 		$id = $this->db->insert_id();
 		if(isset($obj['questions']))
 		{
+			$ques_arr = array();
 			$questions = explode('###', $obj['questions']);
 			foreach ($questions as $question)
 			{
 				
+				$ques_arr[] = array(
+						'question'=>$question,
+						'inquiry_id'=>$id,
+						'status'=>1
+						
+				);
 			}
+
+			if(isset($obj['greetings']))
+			{
+				$greeting_arr = array();
+				$greetings = explode('###', $obj['greetings']);
+				foreach ($greetings as $greeting)
+				{
+			
+					$greeting_arr[] = array(
+							'content'=>$greeting,
+							'inquiry_id'=>$id,
+							'status'=>1
+			
+					);
+				}
+			}
+			$this->db->insert_batch('inquiry_question', $ques_arr);
+			$this->db->insert_batch('inquiry_greeting', $greeting_arr);
+		
 		}
 		return $id;
 		//return $obj;
