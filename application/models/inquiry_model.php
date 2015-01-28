@@ -53,11 +53,52 @@ class inquiry_model extends My_Model {
 
 	function getDetail($id)
 	{
-		$query = $this->db->get_where('product', array('id' => $id,'is_deleted'=>0));
+		if($user_id)
+		{
+			//$str .= "AND r.user_id = ?";
+		}
+		
+		$rst = array();
+		$is_found = false;
+		$query = $this->db->get_where('inquiry', array('id' => $id,'status'=>1));
+		foreach ($query->result() as $row)
+		{	
+			$rst['name'] = $row->name;
+			$rst['id'] = $id;
+			$is_found = true;
+			break;
+		}
+		if(!$is_found)
+		{
+			return null;
+		}
+		$rst['questions'] = array();
+		$rst['greetings'] = array();
+		
+		$str = "SELECT q.* FROM inquiry i
+		 LEFT JOIN inquiry_question q
+		 ON q.inquiry_id = i.id AND q.status = 1 
+		
+		 WHERE i.status = 1  AND i.id = ?"; 
+		
+		$query = $this->db->query($str, array($id));
+		
 		foreach ($query->result() as $row)
 		{
-			return $row;
+			$rst['questions'][] = $row;
 		}
+		
+		$str = "SELECT g.*  FROM inquiry i
+		 LEFT JOIN inquiry_greeting g ON g.inquiry_id = i.id AND g.status = 1
+		 WHERE i.status = 1 AND i.id = ?";
+		
+		$query = $this->db->query($str, array($id));
+		
+		foreach ($query->result() as $row)
+		{
+			$rst['greetings'][] = $row;
+		}
+		return $rst;
 	}
 
 	function updateDetail($obj)
