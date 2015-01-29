@@ -53,10 +53,10 @@ class inquiry_model extends My_Model {
 
 	function getDetail($id)
 	{
-		if($user_id)
+		/* if($user_id)
 		{
 			//$str .= "AND r.user_id = ?";
-		}
+		} */
 		
 		$rst = array();
 		$is_found = false;
