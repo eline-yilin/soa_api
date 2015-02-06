@@ -74,7 +74,7 @@ class inquiry_model extends My_Model {
 		}
 		$rst['questions'] = array();
 		$rst['greetings'] = array();
-		
+		$rst['endings'] = array();
 		$str = "SELECT q.* FROM inquiry i
 		 LEFT JOIN inquiry_question q
 		 ON q.inquiry_id = i.id AND q.status = 1 
@@ -97,6 +97,18 @@ class inquiry_model extends My_Model {
 		foreach ($query->result() as $row)
 		{
 			$rst['greetings'][] = $row;
+		}
+		
+
+		$str = "SELECT g.*  FROM inquiry i
+		 LEFT JOIN inquiry_ending g ON g.inquiry_id = i.id AND g.status = 1
+		 WHERE i.status = 1 AND i.id = ?";
+		
+		$query = $this->db->query($str, array($id));
+		
+		foreach ($query->result() as $row)
+		{
+			$rst['endings'][] = $row;
 		}
 		return $rst;
 	}
@@ -152,6 +164,23 @@ class inquiry_model extends My_Model {
 			$this->db->insert_batch('inquiry_greeting', $greeting_arr);
 		
 		}
+		
+		if(isset($obj['endings']))
+		{
+			$ending_arr = array();
+			$endings = explode('###', $obj['endings']);
+			foreach ($endings as $ending)
+			{
+					
+				$ending_arr[] = array(
+						'content'=>$ending,
+						'inquiry_id'=>$id,
+						'status'=>1
+							
+				);
+			}
+		}
+		$this->db->insert_batch('inquiry_ending', $ending_arr);
 		return $id;
 		//return $obj;
 	}

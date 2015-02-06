@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS `inquiry_ending`;
+CREATE TABLE `inquiry_ending` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`content` VARCHAR(500) NOT NULL DEFAULT '',
+	`inquiry_id` INT NOT NULL ,
+	`status` BIT NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`)
+)
+
 DROP TABLE IF EXISTS `inquiry`;
 CREATE TABLE `inquiry` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
@@ -8,6 +17,7 @@ CREATE TABLE `inquiry` (
 COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=1;
+
 
 DROP TABLE IF EXISTS `inquiry_question`;
 CREATE TABLE `inquiry_question` (
