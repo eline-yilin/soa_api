@@ -84,8 +84,8 @@ class Inquiry extends REST_Controller
     		$this->response(NULL, 400);
     	} */
     	
-    	//$item = $this->product->updateDetail($request);
-    	$item = $request;
+    	$item = $this->model->updateDetail($request);
+    	//$item = $request;
     	if($item)
     	{
     		$this->response($item, 200); // 200 being the HTTP response code
