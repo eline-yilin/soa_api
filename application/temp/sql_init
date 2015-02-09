@@ -41,6 +41,17 @@ CREATE TABLE `inquiry_greeting` (
 COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB;
 
+ALTER TABLE `inquiry`
+CHANGE COLUMN `status` `status` TINYINT NOT NULL DEFAULT '0' COMMENT '0 pending 1 active 2 deleted' AFTER `name`;
+	
+ALTER TABLE `inquiry_ending`
+CHANGE COLUMN `status` `status` TINYINT NOT NULL DEFAULT '0' AFTER `inquiry_id`;
+
+ALTER TABLE `inquiry_greeting`
+CHANGE COLUMN `status` `status` TINYINT NOT NULL DEFAULT '0' AFTER `inquiry_id`;
+
+ALTER TABLE `inquiry_question`
+CHANGE COLUMN `status` `status` TINYINT NOT NULL DEFAULT '0' AFTER `inquiry_id`;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE  `user` (

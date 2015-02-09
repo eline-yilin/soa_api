@@ -108,6 +108,7 @@ class inquiry_model extends My_Model {
 		
 		foreach ($query->result() as $row)
 		{
+			
 			$rst['endings'][] = $row;
 		}
 		return $rst;
@@ -115,11 +116,80 @@ class inquiry_model extends My_Model {
 
 	function updateDetail($obj)
 	{
-		$request = my_process_db_request($obj, $this->data);
-		return $request;
+		
+		$request = my_process_db_request($obj, $this->data, false);
+
+		
+		$id = $request['id'];
+		$remove_request = array('status'=>2);
+		$this->db->update('inquiry_greeting', $remove_request, array('inquiry_id' => $id));
+		
+		$this->db->update('inquiry_ending', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_question', $remove_request, array('inquiry_id' => $id));
+		
+		if(isset($obj['questions']))
+		{
+			$ques_arr = array();
+			$questions = explode('###', $obj['questions']);
+			foreach ($questions as $question)
+			{
+				if(empty($question)){
+					continue;
+				}
+				$ques_arr[] = array(
+						'question'=>$question,
+						'inquiry_id'=>$id,
+						'status'=>1
+		
+				);
+			}
+		
+			if(isset($obj['greetings']))
+			{
+				$greeting_arr = array();
+				$greetings = explode('###', $obj['greetings']);
+				foreach ($greetings as $greeting)
+				{
+					if(empty($greeting)){
+					continue;
+					}
+					$greeting_arr[] = array(
+							'content'=>$greeting,
+							'inquiry_id'=>$id,
+							'status'=>1
+								
+					);
+				}
+			}
+			$this->db->insert_batch('inquiry_question', $ques_arr);
+			$this->db->insert_batch('inquiry_greeting', $greeting_arr);
+		
+		}
+		
+		if(isset($obj['endings']))
+		{
+			$ending_arr = array();
+			$endings = explode('###', $obj['endings']);
+			foreach ($endings as $ending)
+			{
+				if(empty($ending)){
+					continue;
+				}	
+				$ending_arr[] = array(
+						'content'=>$ending,
+						'inquiry_id'=>$id,
+						'status'=>1
+							
+				);
+			}
+			$this->db->insert_batch('inquiry_ending', $ending_arr);
+		}
+
 		
 
-		$this->db->update('entity', $request, array('id' => $_POST['id']));
+		$this->db->update('inquiry', $request, array('id' => $id));
+		return true;
+		
 	}
 	
 	function createDetail($obj)

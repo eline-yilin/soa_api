@@ -15,7 +15,22 @@ if ( ! function_exists('my_process_db_request'))
 		    foreach($target as $key => $attr){
 		    			//set in param
 		    			if(isset($param[$key])){
-		    				$request[$key] = $param[$key];
+		    				if(isset($attr['type']))
+		    				{
+		    					$type = $attr['type'];
+		    					switch ($type){
+		    						case 'int': 
+		    							$request[$key] = intval($param[$key]);
+		    							break;
+		    						default:
+		    							$request[$key] = $param[$key];
+		    							break;
+		    					}
+		    				}
+		    				else
+		    				{
+		    					$request[$key] = $param[$key];
+		    				}
 		    			}
 		    			else{
 		    				//has default
