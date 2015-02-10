@@ -128,8 +128,8 @@ class Inquiry extends REST_Controller
     	{
     		$this->response(NULL, 400);
     	}
-    	$this->response($this->get('id'), 200);return;
-    	$item = $this->product->deleteDetail($this->get('id'));
+    	
+    	$item = $this->model->deleteDetail($this->get('id'));
     		
     	if($item)
     	{

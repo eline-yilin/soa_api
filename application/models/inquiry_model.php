@@ -30,7 +30,7 @@ class inquiry_model extends My_Model {
 	function getList($param = null)
 	{
 		$user_id = isset($param['user_id']) ? $param['user_id'] : 0;
-		$str = "SELECT i.* FROM inquiry i ORDER BY id DESC" ; 
+		$str = "SELECT i.* FROM inquiry i WHERE status = 1 ORDER BY id DESC" ; 
 		/* " p LEFT JOIN user_role r
 				ON p.entity_id = r.entity_id AND r.entity_type = 'entity' AND r.is_deleted = 0 AND
 				p.is_deleted = 0
@@ -257,12 +257,15 @@ class inquiry_model extends My_Model {
 	
 	function deleteDetail($id)
 	{
+		$id = intval($id);
+		$remove_request = array('status'=>2);
+		$this->db->update('inquiry_greeting', $remove_request, array('inquiry_id' => $id));
+		
+		$this->db->update('inquiry_ending', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_question', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry', $remove_request, array('id' => $id));
 		return $id;
-		$this->title   = $_POST['title'];
-		$this->content = $_POST['content'];
-		$this->date    = time();
-	
-		$this->db->update('entries', $this, array('id' => $_POST['id']));
+		
 	}
 }
 ?>
