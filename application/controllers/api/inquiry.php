@@ -49,6 +49,7 @@ class Inquiry extends REST_Controller
 	
 	function detail_get()
 	{
+		
 		if(!$this->get('id'))
 		{
 			$this->response(NULL, 400);
@@ -122,11 +123,12 @@ class Inquiry extends REST_Controller
 
     function detail_delete()
     {
+    	
     	if(!$this->get('id'))
     	{
     		$this->response(NULL, 400);
     	}
-    
+    	$this->response($this->get('id'), 200);return;
     	$item = $this->product->deleteDetail($this->get('id'));
     		
     	if($item)
