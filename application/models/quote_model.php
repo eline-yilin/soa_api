@@ -59,58 +59,28 @@ class quote_model extends My_Model {
 		} */
 		
 		$rst = array();
-		$is_found = false;
-		$query = $this->db->get_where('inquiry', array('id' => $id,'status'=>1));
-		foreach ($query->result() as $row)
-		{	
-			$rst['name'] = $row->name;
-			$rst['id'] = $id;
-			$is_found = true;
-			break;
-		}
-		if(!$is_found)
-		{
-			return null;
-		}
-		$rst['questions'] = array();
-		$rst['greetings'] = array();
-		$rst['endings'] = array();
-		$str = "SELECT q.* FROM inquiry i
-		 LEFT JOIN inquiry_question q
-		 ON q.inquiry_id = i.id AND q.status = 1 
 		
-		 WHERE i.status = 1  AND i.id = ?"; 
+		$rst['clients'] = array();
+		
+		$str = "SELECT q.name as agent , c.* FROM quote_client c
+		 LEFT JOIN quote q
+		 ON c.quote_id = q.id AND q.status = 1 
+		
+		 WHERE c.status = 1  AND q.id = ?"; 
 		
 		$query = $this->db->query($str, array($id));
 		
-		foreach ($query->result() as $row)
+		foreach ($query->result() as $index => $row)
 		{
-			$rst['questions'][] = $row;
+			$rst['clients'][] = $row;
+			if($index == 0)
+			{
+				$rst['agent'] = $row->agent;
+				$rst['id'] = $row->quote_id;
+			}
 		}
 		
-		$str = "SELECT g.*  FROM inquiry i
-		 LEFT JOIN inquiry_greeting g ON g.inquiry_id = i.id AND g.status = 1
-		 WHERE i.status = 1 AND i.id = ?";
 		
-		$query = $this->db->query($str, array($id));
-		
-		foreach ($query->result() as $row)
-		{
-			$rst['greetings'][] = $row;
-		}
-		
-
-		$str = "SELECT g.*  FROM inquiry i
-		 LEFT JOIN inquiry_ending g ON g.inquiry_id = i.id AND g.status = 1
-		 WHERE i.status = 1 AND i.id = ?";
-		
-		$query = $this->db->query($str, array($id));
-		
-		foreach ($query->result() as $row)
-		{
-			
-			$rst['endings'][] = $row;
-		}
 		return $rst;
 	}
 
@@ -122,10 +92,10 @@ class quote_model extends My_Model {
 		
 		$id = $request['id'];
 		$remove_request = array('status'=>2);
-		$this->db->update('inquiry_greeting', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_greeting', $remove_request, array('quote_id' => $id));
 		
-		$this->db->update('inquiry_ending', $remove_request, array('inquiry_id' => $id));
-		$this->db->update('inquiry_question', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_ending', $remove_request, array('quote_id' => $id));
+		$this->db->update('inquiry_question', $remove_request, array('quote_id' => $id));
 		
 		if(isset($obj['questions']))
 		{
@@ -138,7 +108,7 @@ class quote_model extends My_Model {
 				}
 				$ques_arr[] = array(
 						'question'=>$question,
-						'inquiry_id'=>$id,
+						'quote_id'=>$id,
 						'status'=>1
 		
 				);
@@ -155,7 +125,7 @@ class quote_model extends My_Model {
 					}
 					$greeting_arr[] = array(
 							'content'=>$greeting,
-							'inquiry_id'=>$id,
+							'quote_id'=>$id,
 							'status'=>1
 								
 					);
@@ -177,7 +147,7 @@ class quote_model extends My_Model {
 				}	
 				$ending_arr[] = array(
 						'content'=>$ending,
-						'inquiry_id'=>$id,
+						'quote_id'=>$id,
 						'status'=>1
 							
 				);
@@ -211,7 +181,7 @@ class quote_model extends My_Model {
 				$client_arr[] = array(
 						'name'=>$client,
 						'content'=>$contents[$index],
-						'inquiry_id'=>$id,
+						'quote_id'=>$id,
 						'status'=>1
 						
 				);
@@ -228,10 +198,10 @@ class quote_model extends My_Model {
 	{
 		$id = intval($id);
 		$remove_request = array('status'=>2);
-		$this->db->update('inquiry_greeting', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_greeting', $remove_request, array('quote_id' => $id));
 		
-		$this->db->update('inquiry_ending', $remove_request, array('inquiry_id' => $id));
-		$this->db->update('inquiry_question', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('inquiry_ending', $remove_request, array('quote_id' => $id));
+		$this->db->update('inquiry_question', $remove_request, array('quote_id' => $id));
 		$this->db->update('inquiry', $remove_request, array('id' => $id));
 		return $id;
 		
