@@ -202,55 +202,24 @@ class quote_model extends My_Model {
 		$id = $this->db->insert_id();
 		if(isset($obj['clients']))
 		{
-			$ques_arr = array();
-			$questions = explode('###', $obj['clients']);
-			foreach ($questions as $question)
+			$client_arr = array();
+			$clients = explode('###', $obj['clients']);
+			$contents = explode('###', $obj['client_contents']);
+			foreach ($clients as $index => $client)
 			{
 				
-				$ques_arr[] = array(
-						'question'=>$question,
+				$client_arr[] = array(
+						'name'=>$client,
+						'content'=>$contents[$index],
 						'inquiry_id'=>$id,
 						'status'=>1
 						
 				);
 			}
-
-			if(isset($obj['greetings']))
-			{
-				$greeting_arr = array();
-				$greetings = explode('###', $obj['greetings']);
-				foreach ($greetings as $greeting)
-				{
-			
-					$greeting_arr[] = array(
-							'content'=>$greeting,
-							'inquiry_id'=>$id,
-							'status'=>1
-			
-					);
-				}
-			}
-			$this->db->insert_batch('inquiry_question', $ques_arr);
-			$this->db->insert_batch('inquiry_greeting', $greeting_arr);
+			$this->db->insert_batch('quote_client', $client_arr);
 		
 		}
 		
-		if(isset($obj['endings']))
-		{
-			$ending_arr = array();
-			$endings = explode('###', $obj['endings']);
-			foreach ($endings as $ending)
-			{
-					
-				$ending_arr[] = array(
-						'content'=>$ending,
-						'inquiry_id'=>$id,
-						'status'=>1
-							
-				);
-			}
-		}
-		$this->db->insert_batch('inquiry_ending', $ending_arr);
 		return $id;
 		//return $obj;
 	}
