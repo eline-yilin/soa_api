@@ -113,12 +113,9 @@ class quote_model extends My_Model {
 			$this->db->insert_batch('quote_client', $client_arr);
 		
 		}
-		
-		
-
+				
 		$this->db->update('inquiry', $request, array('id' => $id));
-		return true;
-		
+		return true;		
 	}
 	
 	function createDetail($obj)
@@ -157,11 +154,9 @@ class quote_model extends My_Model {
 	{
 		$id = intval($id);
 		$remove_request = array('status'=>2);
-		$this->db->update('inquiry_greeting', $remove_request, array('quote_id' => $id));
-		
-		$this->db->update('inquiry_ending', $remove_request, array('quote_id' => $id));
-		$this->db->update('inquiry_question', $remove_request, array('quote_id' => $id));
-		$this->db->update('inquiry', $remove_request, array('id' => $id));
+		$this->db->update('quote_client', $remove_request, array('quote_id' => $id));		
+		//print_r($this->db->last_query());
+		$this->db->update('quote', $remove_request, array('id' => $id));
 		return $id;
 		
 	}
