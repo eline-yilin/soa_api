@@ -114,7 +114,7 @@ class quote_model extends My_Model {
 		
 		}
 				
-		$this->db->update('inquiry', $request, array('id' => $id));
+		$this->db->update($this->main_table, $request, array('id' => $id));
 		return true;		
 	}
 	
