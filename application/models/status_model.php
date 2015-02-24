@@ -60,7 +60,7 @@ class status_model extends My_Model {
 		
 		$rst = array();
 		$is_found = false;
-		$query = $this->db->get_where('inquiry', array('id' => $id,'status'=>1));
+		$query = $this->db->get_where($this->main_table, array('id' => $id,'status'=>1));
 		foreach ($query->result() as $row)
 		{	
 			$rst['name'] = $row->name;
