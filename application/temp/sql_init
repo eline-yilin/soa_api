@@ -1,3 +1,24 @@
+DROP TABLE IF EXISTS `awb`;
+CREATE TABLE `awb` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(500) NOT NULL DEFAULT '',
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+DROP TABLE IF EXISTS `awb_vendor`;
+CREATE TABLE `awb_vendor` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(150) NOT NULL DEFAULT '',
+	`content` VARCHAR(500) NOT NULL DEFAULT '',
+	`awb_id` INT NOT NULL ,
+	`status` TINYINT NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`)
+)
+
 DROP TABLE IF EXISTS `quote`;
 CREATE TABLE `quote` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
