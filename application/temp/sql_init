@@ -1,3 +1,49 @@
+DROP TABLE IF EXISTS `status_ending`;
+CREATE TABLE `status_ending` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`content` VARCHAR(500) NOT NULL DEFAULT '',
+	`shipping_status_id` INT NOT NULL ,
+	`status` TINYINT NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+DROP TABLE IF EXISTS `shipping_status`;
+CREATE TABLE `shipping_status` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(500) NOT NULL DEFAULT '',
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+
+DROP TABLE IF EXISTS `status_question`;
+CREATE TABLE `status_question` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`question` VARCHAR(500) NOT NULL DEFAULT '',
+	`shipping_status_id` INT NOT NULL ,
+	`status` TINYINT NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `status_greeting`;
+CREATE TABLE `status_greeting` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`content` VARCHAR(500) NOT NULL DEFAULT '',
+	`shipping_status_id` INT NOT NULL,
+	`status` TINYINT NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS `cost`;
 CREATE TABLE `cost` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
