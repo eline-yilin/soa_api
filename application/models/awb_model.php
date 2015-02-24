@@ -92,7 +92,7 @@ class awb_model extends My_Model {
 		
 		$id = $request['id'];
 		$remove_request = array('status'=>2);
-		$this->db->update('quote_client', $remove_request, array('quote_id' => $id));
+		$this->db->update('awb_vendor', $remove_request, array('awb_id' => $id));
 
 		if(isset($obj['clients']))
 		{
@@ -105,12 +105,12 @@ class awb_model extends My_Model {
 				$client_arr[] = array(
 						'name'=>$client,
 						'content'=>$contents[$index],
-						'quote_id'=>$id,
+						'awb_id'=>$id,
 						'status'=>1
 		
 				);
 			}
-			$this->db->insert_batch('quote_client', $client_arr);
+			$this->db->insert_batch('awb_vendor', $client_arr);
 		
 		}
 				
@@ -154,9 +154,9 @@ class awb_model extends My_Model {
 	{
 		$id = intval($id);
 		$remove_request = array('status'=>2);
-		$this->db->update('quote_client', $remove_request, array('quote_id' => $id));		
+		$this->db->update('awb_vendor', $remove_request, array('awb_id' => $id));		
 		//print_r($this->db->last_query());
-		$this->db->update('quote', $remove_request, array('id' => $id));
+		$this->db->update('awb', $remove_request, array('id' => $id));
 		return $id;
 		
 	}

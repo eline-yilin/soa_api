@@ -2,7 +2,7 @@
 require(APPPATH.'/models/My_model.php');
 class cost_model extends My_Model {
 
-	var $main_table   = 'awb';
+	var $main_table   = 'cost';
 	var $content = '';
 	var $data    = array(
 			'id' => array(
@@ -62,9 +62,9 @@ class cost_model extends My_Model {
 		
 		$rst['clients'] = array();
 		
-		$str = "SELECT a.name as awb , v.* FROM awb_vendor v
-		 LEFT JOIN awb a
-		 ON v.awb_id = a.id AND a.status = 1 
+		$str = "SELECT a.name as site , v.* FROM cost_vendor v
+		 LEFT JOIN cost a
+		 ON v.cost_id = a.id AND a.status = 1 
 		
 		 WHERE v.status = 1  AND a.id = ?"; 
 		
@@ -75,8 +75,8 @@ class cost_model extends My_Model {
 			$rst['clients'][] = $row;
 			if($index == 0)
 			{
-				$rst['awb'] = $row->awb;
-				$rst['id'] = $row->awb_id;
+				$rst['site'] = $row->site;
+				$rst['id'] = $row->cost_id;
 			}
 		}
 		
@@ -92,7 +92,7 @@ class cost_model extends My_Model {
 		
 		$id = $request['id'];
 		$remove_request = array('status'=>2);
-		$this->db->update('quote_client', $remove_request, array('quote_id' => $id));
+		$this->db->update('cost_vendor', $remove_request, array('cost_id' => $id));
 
 		if(isset($obj['clients']))
 		{
@@ -105,12 +105,12 @@ class cost_model extends My_Model {
 				$client_arr[] = array(
 						'name'=>$client,
 						'content'=>$contents[$index],
-						'quote_id'=>$id,
+						'cost_id'=>$id,
 						'status'=>1
 		
 				);
 			}
-			$this->db->insert_batch('quote_client', $client_arr);
+			$this->db->insert_batch('cost_vendor', $client_arr);
 		
 		}
 				
@@ -137,12 +137,12 @@ class cost_model extends My_Model {
 				$client_arr[] = array(
 						'name'=>$client,
 						'content'=>$contents[$index],
-						'awb_id'=>$id,
+						'cost_id'=>$id,
 						'status'=>1
 						
 				);
 			}
-			$this->db->insert_batch('awb_vendor', $client_arr);
+			$this->db->insert_batch('cost_vendor', $client_arr);
 		
 		}
 		
@@ -154,9 +154,9 @@ class cost_model extends My_Model {
 	{
 		$id = intval($id);
 		$remove_request = array('status'=>2);
-		$this->db->update('quote_client', $remove_request, array('quote_id' => $id));		
+		$this->db->update('cost_vendor', $remove_request, array('cost_id' => $id));		
 		//print_r($this->db->last_query());
-		$this->db->update('quote', $remove_request, array('id' => $id));
+		$this->db->update('cost', $remove_request, array('id' => $id));
 		return $id;
 		
 	}
