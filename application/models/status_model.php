@@ -122,10 +122,10 @@ class status_model extends My_Model {
 		
 		$id = $request['id'];
 		$remove_request = array('status'=>2);
-		$this->db->update('inquiry_greeting', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('status_greeting', $remove_request, array('shipping_status_id' => $id));
 		
-		$this->db->update('inquiry_ending', $remove_request, array('inquiry_id' => $id));
-		$this->db->update('inquiry_question', $remove_request, array('inquiry_id' => $id));
+		$this->db->update('status_ending', $remove_request, array('shipping_status_id' => $id));
+		$this->db->update('status_question', $remove_request, array('shipping_status_id' => $id));
 		
 		if(isset($obj['questions']))
 		{
@@ -138,7 +138,7 @@ class status_model extends My_Model {
 				}
 				$ques_arr[] = array(
 						'question'=>$question,
-						'inquiry_id'=>$id,
+						'shipping_status_id'=>$id,
 						'status'=>1
 		
 				);
@@ -155,14 +155,14 @@ class status_model extends My_Model {
 					}
 					$greeting_arr[] = array(
 							'content'=>$greeting,
-							'inquiry_id'=>$id,
+							'shipping_status_id'=>$id,
 							'status'=>1
 								
 					);
 				}
 			}
-			$this->db->insert_batch('inquiry_question', $ques_arr);
-			$this->db->insert_batch('inquiry_greeting', $greeting_arr);
+			$this->db->insert_batch('status_question', $ques_arr);
+			$this->db->insert_batch('status_greeting', $greeting_arr);
 		
 		}
 		
@@ -177,17 +177,17 @@ class status_model extends My_Model {
 				}	
 				$ending_arr[] = array(
 						'content'=>$ending,
-						'inquiry_id'=>$id,
+						'shipping_status_id'=>$id,
 						'status'=>1
 							
 				);
 			}
-			$this->db->insert_batch('inquiry_ending', $ending_arr);
+			$this->db->insert_batch('status_ending', $ending_arr);
 		}
 
 		
 
-		$this->db->update('inquiry', $request, array('id' => $id));
+		$this->db->update($this->main_table, $request, array('id' => $id));
 		return true;
 		
 	}
