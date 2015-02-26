@@ -2,7 +2,7 @@
 require(APPPATH.'/models/My_model.php');
 class inquiry_model extends My_Model {
 
-	var $main_table   = 'product';
+	var $main_table   = 'inquiry';
 	var $content = '';
 	var $data    = array(
 			'id' => array(
@@ -60,7 +60,7 @@ class inquiry_model extends My_Model {
 		
 		$rst = array();
 		$is_found = false;
-		$query = $this->db->get_where('inquiry', array('id' => $id,'status'=>1));
+		$query = $this->db->get_where($this->main_table, array('id' => $id,'status'=>1));
 		foreach ($query->result() as $row)
 		{	
 			$rst['name'] = $row->name;

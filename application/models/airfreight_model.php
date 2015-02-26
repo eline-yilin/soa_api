@@ -1,108 +1,144 @@
 <?php
-require(APPPATH.'/models/My_model.php');
+require (APPPATH . '/models/My_model.php');
 class airfreight_model extends My_Model {
-
-	var $main_table   = 'product';
+	var $main_table = 'airfreight';
 	var $content = '';
-	var $data    = array(
-			'id' => array(
-			'default'=> 0,
-			//'required'=>true,
-			'type'=>'int'		
+	var $data = array (
+			'id' => array (
+					'default' => 0,
+					
+					// 'required'=>true,
+					'type' => 'int' 
 			),
-			'name' => array(
-			'required'=>true,
-			'type'=>'string'		
+			'name' => array (
+					'required' => true,
+					'type' => 'string' 
 			),
-			'price' => array(
-					'required'=>true,
-					'type'=>'int'
-			),
-			'entity_id' => array(
-					'required'=>true,
-					'type'=>'int'
-			),
-			'description'=> array(
-					'type'=>'string'
-			),
-			'category_id'=> array(
-					'type'=>'int'
-			),
-			'img'=> array(
-					'type'=>'string'
-			),
-			'is_deleted'=> array(
-					'type'=>'int',
-					'default' => 0
-			)
+			'status' => array (
+					'type' => 'int',
+					'default' => 1 
+			) 
 	);
-
-	function __construct()
-	{
+	function __construct() {
 		// Call the Model constructor
-		parent::__construct();
+		parent::__construct ();
 	}
-	
-	function getList($param = null)
-	{
-		$user_id = isset($param['user_id']) ? $param['user_id'] : 0;
-		$str = "SELECT p.* FROM product p LEFT JOIN user_role r
-				ON p.entity_id = r.entity_id AND r.entity_type = 'entity' AND r.is_deleted = 0 AND
-				p.is_deleted = 0
-				LEFT JOIN entity e ON p.entity_id = e.id
-				WHERE 1=1 ";
-		if($user_id)
-		{
-			$str .= "AND r.user_id = ?";
-		}
-		$query = $this->db->query($str, array($user_id));
-		$resp = array();
-		foreach ($query->result() as $row)
-		{
-			$resp[] = $row;
+	function getList($param = null) {
+		$user_id = isset ( $param ['user_id'] ) ? $param ['user_id'] : 0;
+		$str = "SELECT main.* FROM " . $this->main_table . " main WHERE status = 1 ORDER BY id DESC";
+		$query = $this->db->query ( $str);
+		$resp = array ();
+		foreach ( $query->result () as $row ) {
+			$resp [] = $row;
 		}
 		
 		return $resp;
 	}
-	
-
-	function getDetail($id)
-	{
-		$query = $this->db->get_where('product', array('id' => $id,'is_deleted'=>0));
+	function getDetail($id) {
+		$rst = array();
+		$is_found = false;
+		$query = $this->db->get_where($this->main_table, array('id' => $id,'status'=>1));
+		foreach ($query->result() as $row)
+		{	
+			$rst['name'] = $row->name;
+			$rst['id'] = $id;
+			$is_found = true;
+			break;
+		}
+		if(!$is_found)
+		{
+			return null;
+		}
+		$rst['sites'] = array();
+		
+		$str = "SELECT q.* FROM $this->main_table main
+		 LEFT JOIN airfreight_site q
+		 ON q.airfreight_id = main.id AND q.status = 1 
+		
+		 WHERE main.status = 1  AND main.id = ?"; 
+		
+		$query = $this->db->query($str, array($id));
+		
 		foreach ($query->result() as $row)
 		{
-			return $row;
+			$sid = $row->id;
+			$files = array();
+			$str = "SELECT q.* FROM airfreight_site_file q
+			
+			WHERE q.status = 1  AND q.airfreight_site_id = ?";
+			
+			$query = $this->db->query($str, array($sid));
+			
+			foreach ($query->result() as $file)
+			{
+				
+				$files[] = $file->name;
+			}
+			$row->files = $files;
+			$rst['sites'][] = $row;
 		}
+		
+		
+		return $rst;
 	}
-
-	function updateDetail($obj)
-	{
-		$request = my_process_db_request($obj, $this->data);
+	function updateDetail($obj) {
+		$request = my_process_db_request ( $obj, $this->data );
 		return $request;
 		
-
-		$this->db->update('entity', $request, array('id' => $_POST['id']));
+		$this->db->update ( 'entity', $request, array (
+				'id' => $_POST ['id'] 
+		) );
 	}
-	
-	function createDetail($obj)
-	{
-
-		$request = my_process_db_request($obj, $this->data, false);
-
-		$request['id'] = null;
-		$this->db->insert('product', $request);
-		return $this->db->insert_id();
-		//return $obj;
-	}
-	
-	function deleteDetail($id)
-	{
+	function createDetail($obj) {
+		
+		// parse_str($obj,$fields);
+		$request = my_process_db_request ( $obj, $this->data, false );
+		
+		$request ['id'] = null;
+		$this->db->insert ( $this->main_table, $request );
+		$id = $this->db->insert_id ();
+		
+		// return $obj;
+		if (isset ( $obj ['sites'] )) {
+			foreach ( $obj ['sites'] as $site ) {
+				
+				$site_req = array (
+						'name' => $site ['name'],
+						'airfreight_id' => $id,
+						'status' => 1 
+				)
+				;
+				$this->db->insert ( 'airfreight_site', $site_req );
+				$sid = $this->db->insert_id ();
+				if (isset ( $site ['files'] )) {
+					$file_arr = array ();
+					$files =  explode(',', $site ['files']);
+					
+					foreach ( $files as $file ) {	
+						$file_req = array (
+								'name' => $file,
+								'airfreight_site_id' => $sid,
+								'status' => 1 
+						)
+						;
+						$file_arr [] = $file_req;
+					}
+					$this->db->insert_batch ( 'airfreight_site_file', $file_arr );
+				}
+			}
+		}
+		
 		return $id;
-		$this->title   = $_POST['title'];
-		$this->content = $_POST['content'];
-		$this->date    = time();
-	
-		$this->db->update('entries', $this, array('id' => $_POST['id']));
+	}
+	function deleteDetail($id) {
+		return $id;
+		$this->title = $_POST ['title'];
+		$this->content = $_POST ['content'];
+		$this->date = time ();
+		
+		$this->db->update ( 'entries', $this, array (
+				'id' => $_POST ['id'] 
+		) );
 	}
 }
 ?>

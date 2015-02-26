@@ -1,3 +1,39 @@
+DROP TABLE IF EXISTS `airfreight`;
+CREATE TABLE `airfreight` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(5000) NOT NULL DEFAULT '',
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+DROP TABLE IF EXISTS `airfreight_site`;
+CREATE TABLE `airfreight_site` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(5000) NOT NULL DEFAULT '',
+	`airfreight_id` INT NOT NULL ,
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+
+DROP TABLE IF EXISTS `airfreight_site_file`;
+CREATE TABLE `airfreight_site_file` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(500) NOT NULL DEFAULT '',
+	`airfreight_site_id` INT NOT NULL ,
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
 DROP TABLE IF EXISTS `link`;
 CREATE TABLE `link` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
