@@ -82,12 +82,47 @@ class airfreight_model extends My_Model {
 		return $rst;
 	}
 	function updateDetail($obj) {
-		$request = my_process_db_request ( $obj, $this->data );
-		return $request;
+
+		$request = my_process_db_request($obj, $this->data, false);
+
 		
-		$this->db->update ( 'entity', $request, array (
-				'id' => $_POST ['id'] 
-		) );
+		$id = $request['id'];
+		$remove_request = array('status'=>2);
+		$this->db->update('airfreight_site', $remove_request, array('airfreight_id' => $id));
+
+		if (isset ( $obj ['sites'] )) {
+			foreach ( $obj ['sites'] as $site ) {
+		
+				$site_req = array (
+						'name' => $site ['name'],
+						'airfreight_id' => $id,
+						'status' => 1
+				)
+				;
+				$this->db->insert ( 'airfreight_site', $site_req );
+				$sid = $this->db->insert_id ();
+				if (isset ( $site ['files'] )) {
+					$file_arr = array ();
+					$files =  explode(',', $site ['files']);
+						
+					foreach ( $files as $file ) {
+						$file_req = array (
+								'name' => $file,
+								'airfreight_site_id' => $sid,
+								'status' => 1
+						)
+						;
+						$file_arr [] = $file_req;
+					}
+					$this->db->insert_batch ( 'airfreight_site_file', $file_arr );
+				}
+			}
+		}
+
+		
+
+		$this->db->update($this->main_table, $request, array('id' => $id));
+		return true;
 	}
 	function createDetail($obj) {
 		
