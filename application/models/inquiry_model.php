@@ -30,7 +30,7 @@ class inquiry_model extends My_Model {
 	function getList($param = null)
 	{
 		$user_id = isset($param['user_id']) ? $param['user_id'] : 0;
-		$str = "SELECT i.* FROM inquiry i WHERE status = 1 ORDER BY id DESC" ; 
+		$str = "SELECT i.* FROM inquiry i WHERE status = 1 ORDER BY weight DESC,id DESC" ; 
 		/* " p LEFT JOIN user_role r
 				ON p.entity_id = r.entity_id AND r.entity_type = 'entity' AND r.is_deleted = 0 AND
 				p.is_deleted = 0
@@ -187,7 +187,7 @@ class inquiry_model extends My_Model {
 
 		
 
-		$this->db->update('inquiry', $request, array('id' => $id));
+		$this->db->update($this->main_table, $request, array('id' => $id));
 		return true;
 		
 	}
@@ -198,6 +198,15 @@ class inquiry_model extends My_Model {
 		$request = my_process_db_request($obj, $this->data, false);
 		
 		$request['id'] = null;
+		/* $maxid = 0;
+		$row = $this->db->query('SELECT MAX(id) AS `maxid` FROM ' . $this->main_table)->row();
+		if ($row) {
+			$maxid = $row->maxid;
+		}
+		$maxid++;
+		
+		$request['weight'] = $maxid; */
+		
 		$this->db->insert('inquiry', $request);
 		$id = $this->db->insert_id();
 		if(isset($obj['questions']))
@@ -267,5 +276,29 @@ class inquiry_model extends My_Model {
 		return $id;
 		
 	}
+	
+	function updateWeight($obj)
+	{
+		
+		$request = my_process_db_request($obj, $this->data, false);
+	
+	
+		$id = $request['id'];
+		
+		$this->db->where('id', $id);
+		if(isset($obj['action'])){
+				if(strtolower($obj['action'] ) == 'add'){
+					$this->db->set('weight', '`weight`+ 1', FALSE);
+				}
+				else{
+					$this->db->set('weight', '`weight`- 1', FALSE);
+				}
+		}
+		$this->db->update($this->main_table);
+
+		return true;
+	
+	}
+	
 }
 ?>

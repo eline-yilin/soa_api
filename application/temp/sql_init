@@ -428,4 +428,7 @@ ALTER TABLE `awb_vendor`
 
 ALTER TABLE `cost_vendor`
 	CHANGE COLUMN `content` `content` VARCHAR(5000) NOT NULL DEFAULT '' COLLATE 'utf8_unicode_ci'	;
+	
+ALTER TABLE `inquiry`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
 
