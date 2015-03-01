@@ -142,5 +142,27 @@ class Status extends REST_Controller
     	}
     }
     
-	
+    public function weight_put($idname,$idval)
+    {
+    
+    	$request = $this->put();
+    	$request['id'] = $idval;
+    
+    	/* if(!$this->put('id'))
+    	 {
+    	 $this->response(NULL, 400);
+    	 } */
+    
+    	$item = $this->model->updateWeight($request);
+    	//$item = $request;
+    	if($item)
+    	{
+    		$this->response($item, 200); // 200 being the HTTP response code
+    	}
+    
+    	else
+    	{
+    		$this->response(array('error' => 'Item could not be found'), 404);
+    	}
+    }
 }

@@ -25,7 +25,7 @@ class airfreight_model extends My_Model {
 	}
 	function getList($param = null) {
 		$user_id = isset ( $param ['user_id'] ) ? $param ['user_id'] : 0;
-		$str = "SELECT main.* FROM " . $this->main_table . " main WHERE status = 1 ORDER BY id DESC";
+		$str = "SELECT main.* FROM " . $this->main_table . " main WHERE status = 1 ORDER BY weight DESC, id DESC";
 		$query = $this->db->query ( $str);
 		$resp = array ();
 		foreach ( $query->result () as $row ) {

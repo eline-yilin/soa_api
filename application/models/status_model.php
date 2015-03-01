@@ -30,7 +30,7 @@ class status_model extends My_Model {
 	function getList($param = null)
 	{
 		$user_id = isset($param['user_id']) ? $param['user_id'] : 0;
-		$str = "SELECT i.* FROM " . $this->main_table . " i WHERE status = 1 ORDER BY id DESC" ; 
+		$str = "SELECT i.* FROM " . $this->main_table . " i WHERE status = 1 ORDER BY weight DESC,  id DESC" ; 
 		/* " p LEFT JOIN user_role r
 				ON p.entity_id = r.entity_id AND r.entity_type = 'entity' AND r.is_deleted = 0 AND
 				p.is_deleted = 0

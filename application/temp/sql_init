@@ -432,3 +432,18 @@ ALTER TABLE `cost_vendor`
 ALTER TABLE `inquiry`
 	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
 
+ALTER TABLE `awb`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
+
+ALTER TABLE `cost`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
+
+ALTER TABLE `quote`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
+
+ALTER TABLE `shipping_status`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;
+
+
+ALTER TABLE `airfreight`
+	ADD COLUMN `weight` INT NOT NULL DEFAULT '0' AFTER `status`;

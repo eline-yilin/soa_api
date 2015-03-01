@@ -33,6 +33,29 @@ class My_model extends CI_Model {
 		}
 		return null;
 	}
+	
+	function updateWeight($obj)
+	{
+	
+		$request = my_process_db_request($obj, $this->data, false);
+	
+	
+		$id = $request['id'];
+	
+		$this->db->where('id', $id);
+		if(isset($obj['action'])){
+			if(strtolower($obj['action'] ) == 'add'){
+				$this->db->set('weight', '`weight`+ 1', FALSE);
+			}
+			else{
+				$this->db->set('weight', '`weight`- 1', FALSE);
+			}
+		}
+		$this->db->update($this->main_table);
+	
+		return true;
+	
+	}
 
 }
 ?>

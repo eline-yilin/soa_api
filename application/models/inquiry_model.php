@@ -277,28 +277,7 @@ class inquiry_model extends My_Model {
 		
 	}
 	
-	function updateWeight($obj)
-	{
-		
-		$request = my_process_db_request($obj, $this->data, false);
 	
-	
-		$id = $request['id'];
-		
-		$this->db->where('id', $id);
-		if(isset($obj['action'])){
-				if(strtolower($obj['action'] ) == 'add'){
-					$this->db->set('weight', '`weight`+ 1', FALSE);
-				}
-				else{
-					$this->db->set('weight', '`weight`- 1', FALSE);
-				}
-		}
-		$this->db->update($this->main_table);
-
-		return true;
-	
-	}
 	
 }
 ?>
