@@ -28,14 +28,14 @@ class News extends REST_Controller
 	{
 		// Call the Model constructor
 		parent::__construct();
-		$this->load->model('store_model','entity');
+		$this->load->model('news_model','model');
 	}
 	
 	function list_get()
 	{
 		
 	   $user_id = $this->get('user_id');
-		$item = $this->entity->getList(array('user_id'=>$user_id));
+		$item = $this->model->getList(array('user_id'=>$user_id));
 		if($item)
 		{
 			$this->response($item, 200); // 200 being the HTTP response code
@@ -49,13 +49,13 @@ class News extends REST_Controller
 	
 	function detail_get()
 	{
+		
 		if(!$this->get('id'))
 		{
 			$this->response(NULL, 400);
 		}
 	
-		$item = $this->product->getDetail($this->get('id'));
-		 
+		$item = $this->model->getDetail($this->get('id'));
 		if($item)
 		{
 			$this->response($item, 200); // 200 being the HTTP response code
@@ -77,14 +77,16 @@ class News extends REST_Controller
 	 */
 	public function detail_put()
     {
+    	
     	$request = $this->put();
+
     	/* if(!$this->put('id'))
     	{
     		$this->response(NULL, 400);
     	} */
     	
-    	$item = $this->product->updateDetail($request);
-    		
+    	$item = $this->model->updateDetail($request);
+    	//$item = $request;
     	if($item)
     	{
     		$this->response($item, 200); // 200 being the HTTP response code
@@ -104,8 +106,9 @@ class News extends REST_Controller
     	 {
     	 $this->response(NULL, 400);
     	} */
-    	$item = $this->entity->createDetail($request);
-
+    	 
+    	$item = $this->model->createDetail($request);
+    
     	if($item)
     	{
     		$this->response($item, 200); // 200 being the HTTP response code
@@ -120,12 +123,13 @@ class News extends REST_Controller
 
     function detail_delete()
     {
+    	
     	if(!$this->get('id'))
     	{
     		$this->response(NULL, 400);
     	}
-    
-    	$item = $this->product->deleteDetail($this->get('id'));
+    	
+    	$item = $this->model->deleteDetail($this->get('id'));
     		
     	if($item)
     	{

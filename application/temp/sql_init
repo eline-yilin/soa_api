@@ -1,3 +1,15 @@
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE `news` (
+	`id` INT NOT NULL  AUTO_INCREMENT,
+	`name` VARCHAR(5000) NOT NULL DEFAULT '',
+	`content` TEXT NOT NULL DEFAULT '',
+	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
+	PRIMARY KEY `id` (`id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
 DROP TABLE IF EXISTS `airfreight`;
 CREATE TABLE `airfreight` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
