@@ -371,22 +371,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-DROP TABLE IF EXISTS `news`;
-CREATE TABLE  `news` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `status_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `title` varchar(85) NOT NULL,
-  `content` varchar(500) NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `target_type` varchar(45) NOT NULL DEFAULT 'system',
-  `img` varchar(145) NOT NULL,
-  `url` varchar(200) NULL DEFAULT NULL,
-  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `weight` int(10) unsigned NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) 
-ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (

@@ -1,10 +1,4 @@
 
-
-ALTER TABLE `news`
-	ADD COLUMN `target_id` INT(10) UNSIGNED NULL AFTER `is_deleted`,
-	ADD COLUMN `start_date` DATE NULL AFTER `target_id`;
-ALTER TABLE `news`
-	ADD COLUMN `end_date` DATE NULL DEFAULT NULL AFTER `start_date`;
 ALTER TABLE `user`
 	ADD COLUMN `email` VARCHAR(70) NOT NULL DEFAULT '' AFTER `phone`,
 	ADD COLUMN `password` CHAR(20) NOT NULL  DEFAULT '' AFTER `email`;
