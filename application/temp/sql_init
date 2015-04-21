@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
 	`id` INT NOT NULL  AUTO_INCREMENT,
 	`name` VARCHAR(5000) NOT NULL DEFAULT '',
-	`content` TEXT NOT NULL DEFAULT '',
+	`content` TEXT NOT NULL ,
 	`status` TINYINT NOT NULL DEFAULT b'0' COMMENT '0 pending 1 active 2 deleted',
 	PRIMARY KEY `id` (`id`)
 )
